@@ -2,6 +2,8 @@ package cn.vv.agent.spring.gw;
 
 import cn.vv.agent.common.Constants;
 import com.alibaba.cloud.nacos.NacosServiceInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.*;
@@ -25,6 +27,7 @@ import java.util.Map;
  */
 public class GrayRoundRobinLoadBalancer extends RoundRobinLoadBalancer {
 
+    public static final Logger logger = LoggerFactory.getLogger(GrayRoundRobinLoadBalancer.class);
     public GrayRoundRobinLoadBalancer(ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider, String serviceId) {
         super(serviceInstanceListSupplierProvider, serviceId);
         this.serviceId = serviceId;
@@ -54,11 +57,11 @@ public class GrayRoundRobinLoadBalancer extends RoundRobinLoadBalancer {
         HttpHeaders headers = clientRequest.getHeaders();
 
         String reqVersion = headers.getFirst(Constants.KEY_HTTP_HEADER_VERSION);
+        logger.info("[loadbalancer] - got version := {}", reqVersion);
         if (StringUtils.isEmpty(reqVersion)) {
             return super.choose(request).block();
         }
 
-        // 遍历可以实例元数据，若匹配则返回此实例
         for (ServiceInstance instance : instances) {
             NacosServiceInstance nacosInstance = (NacosServiceInstance) instance;
             Map<String, String> metadata = nacosInstance.getMetadata();

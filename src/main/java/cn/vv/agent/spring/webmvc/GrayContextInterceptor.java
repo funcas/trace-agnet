@@ -2,6 +2,8 @@ package cn.vv.agent.spring.webmvc;
 
 import cn.vv.agent.common.Constants;
 import cn.vv.agent.context.VvTraceContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,9 +20,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GrayContextInterceptor implements HandlerInterceptor {
+
+    public static final Logger logger = LoggerFactory.getLogger(GrayContextInterceptor.class);
     @Override
     public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler) {
         String xVersion = request.getHeader(Constants.KEY_HTTP_HEADER_VERSION);
+        logger.info("[spring web mvc] - add trace context => {}", xVersion);
         if (xVersion != null && !"".equals(xVersion)) {
             VvTraceContext.getCurrentContext().setVersion(xVersion);
         }
@@ -33,6 +38,7 @@ public class GrayContextInterceptor implements HandlerInterceptor {
                                 @Nonnull HttpServletResponse response,
                                 @Nonnull Object handler,
                                 Exception ex) {
+        logger.info("[spring web mvc] - clear trace context");
         VvTraceContext.clearContext();
     }
 }

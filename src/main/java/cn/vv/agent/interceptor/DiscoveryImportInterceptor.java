@@ -25,7 +25,7 @@ public class DiscoveryImportInterceptor {
 
         String[] imports = (String[])callable.call();
         List<String> importsList = new ArrayList<>(Arrays.asList(imports));
-        importsList.add("");
+        importsList.add(AGENT_AUTOCONFIGURATION_CLASS);
         return importsList.toArray(new String[0]);
     }
 }
