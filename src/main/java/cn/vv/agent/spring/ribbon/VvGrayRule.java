@@ -31,7 +31,9 @@ public class VvGrayRule extends ZoneAvoidanceRule {
 
         //从ThreadLocal中获取灰度标记
         String grayVersion = VvTraceContext.getCurrentContext().getVersion();
-        logger.info("[ribbon] - version := {}", grayVersion);
+        if(logger.isDebugEnabled()) {
+            logger.debug("[RIBBON] - got version := {}", grayVersion);
+        }
         if (grayVersion == null || "".equals(grayVersion)) {
             grayVersion = Constants.VAL_VERSION_PROD;
         }
@@ -45,17 +47,16 @@ public class VvGrayRule extends ZoneAvoidanceRule {
             }
             return server.getMetadata().get(Constants.KEY_METADATA_VERSION);
         }));
-        logger.info("[ribbon] - serviceInstanceMap := {}", serverMap);
+        if(logger.isDebugEnabled()) {
+            logger.debug("[RIBBON] - serviceInstanceMap := {}", serverMap);
+        }
         return originChoose(serverMap.get(grayVersion), key);
-
-
     }
 
     private Server originChoose(List<Server> noMetaServerList, Object key) {
         if (noMetaServerList == null) {
             return null;
         }
-
         return getPredicate().chooseRoundRobinAfterFiltering(noMetaServerList, key).orNull();
     }
 }

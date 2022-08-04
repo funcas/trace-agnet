@@ -20,25 +20,27 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GrayContextInterceptor implements HandlerInterceptor {
-
     public static final Logger logger = LoggerFactory.getLogger(GrayContextInterceptor.class);
     @Override
     public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler) {
         String xVersion = request.getHeader(Constants.KEY_HTTP_HEADER_VERSION);
-        logger.info("[spring web mvc] - add trace context => {}", xVersion);
+        if(logger.isDebugEnabled()) {
+            logger.debug("[SPRING WEB MVC] - add trace context => {}", xVersion);
+        }
         if (xVersion != null && !"".equals(xVersion)) {
             VvTraceContext.getCurrentContext().setVersion(xVersion);
         }
         return true;
     }
 
-
     @Override
     public void afterCompletion(@Nonnull HttpServletRequest request,
                                 @Nonnull HttpServletResponse response,
                                 @Nonnull Object handler,
                                 Exception ex) {
-        logger.info("[spring web mvc] - clear trace context");
+        if(logger.isDebugEnabled()) {
+            logger.info("[SPRING WEB MVC] - clear trace context");
+        }
         VvTraceContext.clearContext();
     }
 }

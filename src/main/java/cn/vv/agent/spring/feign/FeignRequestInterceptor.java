@@ -17,7 +17,9 @@ public class FeignRequestInterceptor implements RequestInterceptor {
     public static final Logger logger = LoggerFactory.getLogger(FeignRequestInterceptor.class);
     @Override
     public void apply(RequestTemplate template) {
-        logger.info("[feign] - interceptor got version := {}", VvTraceContext.getCurrentContext().getVersion());
+        if(logger.isDebugEnabled()) {
+            logger.info("[FEIGN] - feign interceptor got version := {}", VvTraceContext.getCurrentContext().getVersion());
+        }
         template.header(Constants.KEY_HTTP_HEADER_VERSION, VvTraceContext.getCurrentContext().getVersion());
     }
 }

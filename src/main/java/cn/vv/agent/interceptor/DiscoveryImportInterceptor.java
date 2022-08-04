@@ -18,7 +18,7 @@ import java.util.concurrent.Callable;
  */
 public class DiscoveryImportInterceptor {
 
-    public static final String AGENT_AUTOCONFIGURATION_CLASS = "cn.vv.agent.spring.configuration.GrayAutoConfiguration";
+    public static final String AGENT_AUTOCONFIGURATION_CLASS = "cn.vv.agent.spring.GrayAutoConfiguration";
 
     @RuntimeType
     public static Object intercept(@Origin Method method, @SuperCall Callable<?> callable) throws Exception {

@@ -1,5 +1,6 @@
 package cn.vv.agent;
 
+import cn.vv.agent.common.Constants;
 import cn.vv.agent.interceptor.DiscoveryImportInterceptor;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.implementation.MethodDelegation;
@@ -23,9 +24,9 @@ public class VvAgent {
      */
     public static void premain(String agentArgs, Instrumentation inst) {
         new AgentBuilder.Default()
-                .type(ElementMatchers.named("org.springframework.cloud.client.discovery.EnableDiscoveryClientImportSelector"))
+                .type(ElementMatchers.named(Constants.ENTRY_IMPORT_SELECT_CLASS))
                 .transform((builder, typeDescription, classLoader, module) -> builder
-                        .method(ElementMatchers.named("selectImports"))
+                        .method(ElementMatchers.named(Constants.ENTRY_IMPORT_SELECT_METHOD))
                         .intercept(MethodDelegation.to(DiscoveryImportInterceptor.class))
                 )
                 .installOn(inst);
@@ -33,12 +34,14 @@ public class VvAgent {
 
     /**
      * 动态 attach 方式启动，运行此方法
-     * 此方法没有实现，因为动态扩展spring bean注册，不在启动阶段无法生效
+     * 此方法没有实现，因为动态扩展spring bean注册，不在启动阶段无法生效,
+     * 后续可以扩展类似vone的做法拦截生效类来完成attach时时生效能力，本期暂不实现
      *
      * @param agentArgs
      * @param inst
      */
     public static void agentmain(String agentArgs, Instrumentation inst) {
+        // TODO: 待实现
         System.out.println("agentmain");
     }
 }

@@ -23,4 +23,10 @@ public class Constants {
      */
     public static final String VAL_VERSION_PROD = "prod";
 
+
+    public static final String ENTRY_IMPORT_SELECT_CLASS =
+            "org.springframework.cloud.client.discovery.EnableDiscoveryClientImportSelector";
+
+    public static final String ENTRY_IMPORT_SELECT_METHOD = "selectImports";
+
 }

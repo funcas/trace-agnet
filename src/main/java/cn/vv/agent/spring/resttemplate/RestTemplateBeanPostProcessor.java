@@ -26,10 +26,10 @@ public class RestTemplateBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(@Nonnull Object bean, @Nonnull String beanName) throws BeansException {
         if (bean instanceof RestTemplate) {
-            logger.info("[restTemplate] - modify restTemplate bean to add interceptors");
+            logger.info("[REST-TEMPLATE] - modify restTemplate bean to add interceptors");
             RestTemplate restTemplate = (RestTemplate) bean;
             restTemplate.setInterceptors(Collections.singletonList(new RestTemplateInterceptor()));
-            logger.info("[restTemplate] - modify restTemplate bean to add interceptors done");
+            logger.info("[REST-TEMPLATE] - modify restTemplate bean to add interceptors done");
         }
         return bean;
     }
