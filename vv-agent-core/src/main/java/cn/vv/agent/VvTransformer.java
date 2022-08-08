@@ -2,8 +2,6 @@ package cn.vv.agent;
 
 import cn.vv.agent.loader.Archive;
 import cn.vv.agent.loader.JarFileArchive;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.lang.instrument.ClassFileTransformer;
@@ -25,7 +23,6 @@ import java.util.List;
  * @since 1.0
  */
 public class VvTransformer implements ClassFileTransformer {
-    public static final Logger logger = LoggerFactory.getLogger(VvTransformer.class);
     private Instrumentation inst;
 
     public VvTransformer(Instrumentation inst) {
@@ -83,11 +80,11 @@ public class VvTransformer implements ClassFileTransformer {
                 });
 
                 for (Archive archive : archiveList) {
-                    logger.info("add url to classloader. url: {}", archive.getUrl());
                     method.invoke(launchedURLClassLoader, archive.getUrl());
+                    System.out.println("add to classLoader: " + archive.getUrl());
                 }
             } catch (Throwable t) {
-                logger.error(null, t);
+                t.printStackTrace();
             }
         }
 
