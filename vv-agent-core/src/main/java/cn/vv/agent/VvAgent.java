@@ -1,11 +1,5 @@
 package cn.vv.agent;
 
-import cn.vv.agent.common.Constants;
-import cn.vv.agent.interceptor.DiscoveryImportInterceptor;
-import net.bytebuddy.agent.builder.AgentBuilder;
-import net.bytebuddy.implementation.MethodDelegation;
-import net.bytebuddy.matcher.ElementMatchers;
-
 import java.lang.instrument.Instrumentation;
 
 /**
@@ -23,13 +17,9 @@ public class VvAgent {
      * @param inst
      */
     public static void premain(String agentArgs, Instrumentation inst) {
-        new AgentBuilder.Default()
-                .type(ElementMatchers.named(Constants.ENTRY_IMPORT_SELECT_CLASS))
-                .transform((builder, typeDescription, classLoader, module) -> builder
-                        .method(ElementMatchers.named(Constants.ENTRY_IMPORT_SELECT_METHOD))
-                        .intercept(MethodDelegation.to(DiscoveryImportInterceptor.class))
-                )
-                .installOn(inst);
+        VvTransformer transformer = new VvTransformer(inst);
+        inst.addTransformer(transformer, true);
+
     }
 
     /**
@@ -44,4 +34,5 @@ public class VvAgent {
         // TODO: 待实现
         System.out.println("agentmain");
     }
+
 }
