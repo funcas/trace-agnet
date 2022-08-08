@@ -35,7 +35,10 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
     private void addRequestHeader(HttpRequest request) {
         HttpHeaders headers = request.getHeaders();
         String version = VvTraceContext.getCurrentContext().getVersion();
-        logger.info("[REST-TEMPLATE] - set header x-version := {}", version);
+        if(logger.isDebugEnabled()) {
+            logger.debug("[REST-TEMPLATE] - set header x-version := {}", version);
+
+        }
         headers.add(Constants.KEY_HTTP_HEADER_VERSION,version);
     }
 }

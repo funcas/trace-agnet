@@ -58,7 +58,7 @@ public class GrayRoundRobinLoadBalancer implements ReactorServiceInstanceLoadBal
         } else {
             String reqVersion = headers.getFirst(Constants.KEY_HTTP_HEADER_VERSION);
             if(logger.isDebugEnabled()) {
-                logger.info("[GW] - header x-version := {}", reqVersion);
+                logger.debug("[GW] - header x-version := {}", reqVersion);
             }
             if (StringUtils.isEmpty(reqVersion)) {
                 return processRibbonInstanceResponse(instances);

@@ -39,7 +39,7 @@ public class GrayContextInterceptor implements HandlerInterceptor {
                                 @Nonnull Object handler,
                                 Exception ex) {
         if(logger.isDebugEnabled()) {
-            logger.info("[SPRING WEB MVC] - clear trace context");
+            logger.debug("[SPRING WEB MVC] - clear trace context");
         }
         VvTraceContext.clearContext();
     }
