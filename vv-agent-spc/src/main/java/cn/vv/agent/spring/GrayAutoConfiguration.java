@@ -2,10 +2,14 @@ package cn.vv.agent.spring;
 
 import cn.vv.agent.spring.feign.FeignRequestInterceptor;
 import cn.vv.agent.spring.gw.GrayRoundRobinLoadBalancer;
+import cn.vv.agent.spring.rabbit.RabbitListenerContainerFactoryPostProcessor;
+import cn.vv.agent.spring.rabbit.RabbitTemplatePostProcessor;
 import cn.vv.agent.spring.resttemplate.RestTemplateBeanPostProcessor;
 import cn.vv.agent.spring.ribbon.VvGrayRule;
 import cn.vv.agent.spring.webmvc.GrayContextInterceptor;
 import com.netflix.loadbalancer.ZoneAvoidanceRule;
+import org.springframework.amqp.rabbit.config.AbstractRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -109,5 +113,17 @@ public class GrayAutoConfiguration {
     public static class GwLoadBalancerRegisterConfiguration {
     }
 
+
+    @ConditionalOnClass(AbstractRabbitListenerContainerFactory.class)
+    @Bean
+    public RabbitListenerContainerFactoryPostProcessor rabbitListenerContainerFactoryPostProcessor() {
+        return new RabbitListenerContainerFactoryPostProcessor();
+    }
+
+    @Bean
+    @ConditionalOnClass(RabbitTemplate.class)
+    public RabbitTemplatePostProcessor rabbitTemplatePostProcessor() {
+        return new RabbitTemplatePostProcessor();
+    }
 
 }
