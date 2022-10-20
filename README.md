@@ -2,7 +2,7 @@
 
 ## 使用方法
 
-* 适用范围：使用vv-fw构建的spring-cloud微服务应用（因为编译版本使用的是fw继承下来的）
+* 适用范围：使用spring-cloud构建微服务应用
 * 对于网关，简单添加本agent到启动命令行即可,如下示例
 ```shell
 java -jar -javaagent:vv-agnet-1.0-SNAPSHOT-jar-with-dependencies.jar xxx-service.jar 
